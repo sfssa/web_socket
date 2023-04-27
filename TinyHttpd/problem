@@ -1,0 +1,24 @@
+机器：centos7.9-64
+我并没有写makefile文件，我选择直接编译：gcc -httpd.c -g -o httpd.exe -pthread(添加-g参数是为了用GDB调试)
+成功编译后需要把端口打开：
+  firewall-cmd --add-port=9006/tcp --permanent(--permanent参数是为了让永久生效)
+  firewall-cmd --reload(重新加载防火墙设置)
+  ./httpd.exe即可执行
+  netstat -tuln | grep 9006（显示.httod.exe在监听即可)
+在客户端输入ip:port/后无法访问到index.html：
+  将index.html文件设为不可执行，否则会将其作为cgi来执行
+安装perl测试：
+  在这里下载：https://www.cpan.org/src/
+  ./Configure -de
+  make
+  make list
+  make install
+  perl -v
+  出现This is perl 5, version 26, subversion 1 (v5.26.1) built for x86_64-linux....即可
+安装cgi模块：
+  perl -MCPAN -e shell
+  install CGI.pm
+  perl -MCGI -e 'print "CGI.pm version $CGI::VERSION\n";' 出现CGI.pm version 4.26即可
+CGI程序：
+  CGI程序的第一行具有perl的路径，用whereis perl命令找到的实际路径来替换.cgi程序中的路径
+  
